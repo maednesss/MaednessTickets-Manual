@@ -788,47 +788,77 @@
 
   <script>
 
-    const ticketStorage =
-      sessionStorage.getItem(
-        "maedness_ticket"
-      );
+    async function loadTicketData() {
+      const params = new URLSearchParams(window.location.search);
+      const tokenFromUrl = params.get("token");
+      let ticketData = null;
 
-    if (!ticketStorage) {
+      // I link condivisibili usano ?token=... e recuperano i dati dal server.
+      if (tokenFromUrl) {
+        if (!/^[a-f0-9]{48}$/i.test(tokenFromUrl)) {
+          showTicketError("LINK BIGLIETTO NON VALIDO");
+          return;
+        }
 
-      window.location.replace(
-        "./index.html"
-      );
+        try {
+          const response = await fetch(
+            "https://rmniojqexlasxfxisqbm.supabase.co/functions/v1/get-ticket?token=" + encodeURIComponent(tokenFromUrl),
+            { method: "GET", headers: { "Accept": "application/json" }, cache: "no-store" }
+          );
+          const data = await response.json();
+          if (!response.ok || !data.success || !data.ticket || !data.participant) {
+            throw new Error(data.error || "TICKET_NOT_FOUND");
+          }
 
+          ticketData = {
+            firstName: data.participant.first_name || "",
+            lastName: data.participant.last_name || "",
+            token: data.ticket.token || tokenFromUrl,
+            status: data.ticket.status || "VALID",
+            event: data.event ? {
+              name: data.event.name,
+              date: data.event.date,
+              location: data.event.location
+            } : {},
+            wallet: data.wallet ? {
+              serialNumber: data.wallet.serial_number,
+              shareUrl: data.wallet.share_url,
+              googleSaveUrl: data.wallet.google_save_url
+            } : {}
+          };
+        } catch (error) {
+          console.error("Ticket loading error:", error);
+          showTicketError("IMPOSSIBILE CARICARE IL BIGLIETTO. CONTROLLA IL LINK E RIPROVA.");
+          return;
+        }
+      } else {
+        // Mantiene compatibilità con eventuali biglietti creati dal vecchio flusso sullo stesso telefono.
+        try {
+          const stored = sessionStorage.getItem("maedness_ticket");
+          if (stored) ticketData = JSON.parse(stored);
+        } catch (error) {
+          console.error("Ticket storage error:", error);
+        }
+        if (!ticketData) {
+          showTicketError("LINK BIGLIETTO MANCANTE. APRI IL LINK COMPLETO RICEVUTO.");
+          return;
+        }
+      }
+
+      renderTicket(ticketData);
     }
 
-    let ticketData = null;
-
-    try {
-
-      ticketData =
-        JSON.parse(ticketStorage);
-
-    } catch (error) {
-
-      console.error(
-        "Ticket data error:",
-        error
-      );
-
-      window.location.replace(
-        "./index.html"
-      );
-
+    function showTicketError(message) {
+      const messageElement = document.getElementById("actionMessage");
+      if (messageElement) messageElement.textContent = message;
+      const state = document.getElementById("qrState");
+      if (state) {
+        state.textContent = "ERROR";
+        state.style.color = "#ff0000";
+      }
     }
 
-    if (!ticketData) {
-
-      window.location.replace(
-        "./index.html"
-      );
-
-    }
-
+    function renderTicket(ticketData) {
     const participantName =
       document.getElementById(
         "participantName"
@@ -2067,6 +2097,10 @@
       );
 
     }
+
+    }
+
+    loadTicketData();
 
   </script>
 
