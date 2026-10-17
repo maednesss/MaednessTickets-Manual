@@ -1976,9 +1976,9 @@
             NUOVA PAGINA TICKET
           */
 
-          window.location.href =
-            "./ticket.html";
-
+         window.location.href =
+  "./ticket.html?token=" +
+  encodeURIComponent(data.ticket.token);
 
         } catch (error) {
 
