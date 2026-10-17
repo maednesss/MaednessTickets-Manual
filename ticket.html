@@ -1,0 +1,2074 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+  <title>MÆDNESS® — TICKET</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700;800;900&display=swap"
+    rel="stylesheet"
+  >
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+  ></script>
+  <style>
+    :root {
+      --red: #ff0000;
+      --black: #050505;
+      --white: #ffffff;
+      --green: #20d878;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      background: var(--black);
+    }
+
+    body {
+      color: var(--white);
+      font-family: "Inter", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .desktop-warning {
+      display: none;
+    }
+
+    @media (min-width: 700px) {
+      .ticket-page {
+        display: none !important;
+      }
+
+      .desktop-warning {
+        position: fixed;
+        inset: 0;
+        background: var(--black);
+        color: var(--white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 40px;
+        font-family: "Anton", sans-serif;
+        font-size: 34px;
+        letter-spacing: .04em;
+      }
+    }
+
+    .ticket-page {
+      min-height: 100svh;
+      background:
+        radial-gradient(
+          circle at 88% 8%,
+          rgba(255,0,0,.055),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 8% 72%,
+          rgba(0,0,0,.035),
+          transparent 30%
+        ),
+        linear-gradient(
+          135deg,
+          #ffffff 0%,
+          #f8f8f8 48%,
+          #ffffff 100%
+        );
+      color: var(--black);
+      padding: 18px 16px 30px;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .ticket-page::before {
+      content: "";
+      position: absolute;
+      inset: -55% -45%;
+      background:
+        linear-gradient(
+          108deg,
+          transparent 0%,
+          transparent 46.8%,
+          rgba(255,0,0,.10) 46.95%,
+          rgba(255,0,0,.10) 47.05%,
+          transparent 47.2%,
+          transparent 100%
+        ),
+        linear-gradient(
+          108deg,
+          transparent 0%,
+          transparent 65.4%,
+          rgba(0,0,0,.075) 65.52%,
+          rgba(0,0,0,.075) 65.62%,
+          transparent 65.78%,
+          transparent 100%
+        ),
+        linear-gradient(
+          28deg,
+          transparent 0%,
+          transparent 31.2%,
+          rgba(0,0,0,.055) 31.34%,
+          rgba(0,0,0,.055) 31.42%,
+          transparent 31.58%,
+          transparent 100%
+        ),
+        linear-gradient(
+          158deg,
+          transparent 0%,
+          transparent 72.5%,
+          rgba(255,0,0,.07) 72.62%,
+          rgba(255,0,0,.07) 72.70%,
+          transparent 72.86%,
+          transparent 100%
+        );
+      background-size:
+        190px 190px,
+        260px 260px,
+        220px 220px,
+        300px 300px;
+      animation:
+        backgroundLinesOne 15s linear infinite;
+      pointer-events: none;
+      z-index: -3;
+    }
+
+    .ticket-page::after {
+      content: "";
+      position: absolute;
+      inset: -50% -40%;
+      background:
+        linear-gradient(
+          76deg,
+          transparent 0%,
+          transparent 21.2%,
+          rgba(0,0,0,.045) 21.34%,
+          rgba(0,0,0,.045) 21.42%,
+          transparent 21.58%,
+          transparent 100%
+        ),
+        linear-gradient(
+          134deg,
+          transparent 0%,
+          transparent 54.3%,
+          rgba(255,0,0,.055) 54.44%,
+          rgba(255,0,0,.055) 54.52%,
+          transparent 54.68%,
+          transparent 100%
+        ),
+        linear-gradient(
+          12deg,
+          transparent 0%,
+          transparent 81.5%,
+          rgba(0,0,0,.045) 81.64%,
+          rgba(0,0,0,.045) 81.72%,
+          transparent 81.88%,
+          transparent 100%
+        ),
+        linear-gradient(
+          170deg,
+          transparent 0%,
+          transparent 39.5%,
+          rgba(255,0,0,.04) 39.62%,
+          rgba(255,0,0,.04) 39.70%,
+          transparent 39.86%,
+          transparent 100%
+        );
+      background-size:
+        250px 250px,
+        310px 310px,
+        210px 210px,
+        360px 360px;
+      animation:
+        backgroundLinesTwo 21s linear infinite;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    @keyframes backgroundLinesOne {
+      0% {
+        transform: translate3d(-4%, -3%, 0);
+      }
+
+      25% {
+        transform: translate3d(3%, -1%, 0);
+      }
+
+      50% {
+        transform: translate3d(5%, 4%, 0);
+      }
+
+      75% {
+        transform: translate3d(-2%, 5%, 0);
+      }
+
+      100% {
+        transform: translate3d(-4%, -3%, 0);
+      }
+    }
+
+    @keyframes backgroundLinesTwo {
+      0% {
+        transform: translate3d(4%, 2%, 0);
+      }
+
+      25% {
+        transform: translate3d(-3%, 5%, 0);
+      }
+
+      50% {
+        transform: translate3d(-5%, -2%, 0);
+      }
+
+      75% {
+        transform: translate3d(2%, -5%, 0);
+      }
+
+      100% {
+        transform: translate3d(4%, 2%, 0);
+      }
+    }
+
+    .ticket-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(0,0,0,.16);
+      position: relative;
+      z-index: 2;
+    }
+
+    .ticket-logo {
+      font-family: "Anton", sans-serif;
+      font-size: 22px;
+      letter-spacing: .04em;
+      line-height: 1;
+    }
+
+    .ticket-logo span {
+      position: relative;
+      top: -5px;
+      font-size: 10px;
+      margin-left: 2px;
+    }
+
+    .ticket-code {
+      color: var(--red);
+      font-size: 7px;
+      font-weight: 900;
+      letter-spacing: .18em;
+      text-align: right;
+      line-height: 1.5;
+    }
+
+    .ticket-header {
+      padding: 28px 0 22px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .ticket-kicker {
+      font-size: 7px;
+      font-weight: 900;
+      letter-spacing: .25em;
+      color: var(--red);
+      margin-bottom: 7px;
+    }
+
+    .ticket-event {
+      font-family: "Anton", sans-serif;
+      font-size: clamp(48px, 15vw, 68px);
+      line-height: .8;
+      letter-spacing: -.025em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: clip;
+    }
+
+    .ticket-event-hero {
+  position: absolute;
+  top: 5px;
+  right: -4px;
+
+  width: 125px;
+  height: 125px;
+
+  max-width: none;
+  object-fit: contain;
+  object-position: center;
+
+  display: block;
+
+  transform: none;
+  animation: none;
+
+  z-index: 3;
+  pointer-events: none;
+}
+
+    .ticket-meta {
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .ticket-date {
+      font-family: "Anton", sans-serif;
+      font-size: 24px;
+      line-height: .9;
+      letter-spacing: .02em;
+    }
+
+    .ticket-location {
+      font-size: 7px;
+      font-weight: 900;
+      letter-spacing: .18em;
+      text-align: right;
+      line-height: 1.5;
+    }
+
+    .ticket-card {
+      background: var(--white);
+      color: var(--black);
+      padding: 14px;
+      position: relative;
+      margin-top: 5px;
+      z-index: 2;
+    }
+
+    .ticket-card::before,
+    .ticket-card::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-color: var(--red);
+      pointer-events: none;
+    }
+
+    .ticket-card::before {
+      top: -5px;
+      left: -5px;
+      border-top: 1px solid var(--red);
+      border-left: 1px solid var(--red);
+    }
+
+    .ticket-card::after {
+      right: -5px;
+      bottom: -5px;
+      border-right: 1px solid var(--red);
+      border-bottom: 1px solid var(--red);
+    }
+
+    .participant-label {
+      font-size: 6px;
+      font-weight: 900;
+      letter-spacing: .22em;
+      color: rgba(0,0,0,.55);
+      margin-bottom: 4px;
+    }
+
+    .participant-name {
+      font-family: "Anton", sans-serif;
+      font-size: clamp(29px, 9vw, 42px);
+      line-height: .9;
+      letter-spacing: -.01em;
+      text-transform: uppercase;
+      word-break: break-word;
+    }
+
+    .qr-section {
+      margin-top: 18px;
+      border-top: 1px solid rgba(0,0,0,.15);
+      padding-top: 18px;
+    }
+
+    .qr-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .qr-label {
+      font-size: 7px;
+      font-weight: 900;
+      letter-spacing: .2em;
+    }
+
+    .qr-state {
+      color: var(--green);
+      font-size: 6px;
+      font-weight: 900;
+      letter-spacing: .15em;
+    }
+
+    .qr-frame {
+      width: 178px;
+      height: 178px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      padding: 5px;
+      border: 0;
+      border-radius: 18px;
+      box-shadow: none;
+      overflow: hidden;
+    }
+
+    #qrcode {
+      width: 168px;
+      height: 168px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 14px;
+    }
+
+    #qrcode img,
+    #qrcode canvas {
+      display: block;
+      width: 168px !important;
+      height: 168px !important;
+      max-width: 168px;
+      max-height: 168px;
+      image-rendering: pixelated;
+      border-radius: 14px;
+    }
+
+    .qr-note {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 6px;
+      font-weight: 800;
+      letter-spacing: .15em;
+      color: rgba(0,0,0,.55);
+    }
+
+    .actions {
+      margin-top: 16px;
+      display: grid;
+      gap: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .wallet-action {
+      width: 100%;
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 0;
+      padding: 4px 0;
+      cursor: pointer;
+      transition:
+        transform .12s ease,
+        opacity .2s ease;
+    }
+
+    .wallet-action:active {
+      transform: scale(.97);
+    }
+
+    .wallet-action img {
+      width: auto;
+      height: 58px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .wallet-action.hidden {
+      display: none;
+    }
+
+    .wallet-fallback {
+      display: none;
+      font-family: "Anton", sans-serif;
+      font-size: 18px;
+      letter-spacing: .03em;
+      color: #000;
+    }
+
+    .wallet-action.badge-error .wallet-fallback {
+      display: block;
+    }
+
+    .wallet-action.badge-error img {
+      display: none;
+    }
+
+    .pdf-button {
+      width: 100%;
+      min-height: 56px;
+      border: 0;
+      border-radius: 0;
+      cursor: pointer;
+      font-family: "Anton", sans-serif;
+      font-size: 18px;
+      letter-spacing: .035em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--red);
+      color: var(--white);
+      transition:
+        transform .12s ease,
+        background .2s ease;
+    }
+
+    .pdf-button:active {
+      transform: scale(.97);
+    }
+
+    .pdf-button:hover {
+      background: var(--black);
+    }
+
+    .pdf-button.loading {
+      opacity: .7;
+      pointer-events: none;
+    }
+
+    .ticket-footer {
+      margin-top: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      font-size: 6px;
+      font-weight: 900;
+      letter-spacing: .16em;
+      line-height: 1.5;
+      opacity: .6;
+      position: relative;
+      z-index: 2;
+    }
+
+    .ticket-footer-right {
+      text-align: right;
+    }
+
+    .action-message {
+      min-height: 14px;
+      margin-top: 8px;
+      text-align: center;
+      font-size: 6px;
+      font-weight: 900;
+      letter-spacing: .15em;
+      color: var(--red);
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ticket-page::before,
+      .ticket-page::after {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="desktop-warning">
+    MÆDNESS®<br>
+    MOBILE EXPERIENCE ONLY
+  </div>
+
+  <main class="ticket-page">
+
+    <header class="ticket-top">
+
+      <div class="ticket-logo">
+        MÆDNESS<span>®</span>
+      </div>
+
+      <div class="ticket-code">
+        DIGITAL ACCESS<br>
+        ROTAROTT / 001
+      </div>
+
+    </header>
+
+    <section class="ticket-header">
+
+      <div class="ticket-kicker">
+        ACCESS CONFIRMED
+      </div>
+
+      <h1
+        class="ticket-event"
+        id="ticketEvent"
+      >
+        ROTAROTT
+      </h1>
+
+      <img
+        class="ticket-event-hero"
+        src="./hero2.svg"
+        alt=""
+        aria-hidden="true"
+      >
+
+      <div class="ticket-meta">
+
+        <div
+          class="ticket-date"
+          id="ticketDate"
+        >
+          18.10.2026
+        </div>
+
+        <div
+          class="ticket-location"
+          id="ticketLocation"
+        >
+          FOGGIA / ITALY
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="ticket-card">
+
+      <div class="participant-label">
+        NOME E COGNOME PARTECIPANTE
+      </div>
+
+      <div
+        class="participant-name"
+        id="participantName"
+      >
+        —
+      </div>
+
+      <div class="qr-section">
+
+        <div class="qr-label-row">
+
+          <div class="qr-label">
+            ENTRY QR
+          </div>
+
+          <div
+            class="qr-state"
+            id="qrState"
+          >
+            VALID
+          </div>
+
+        </div>
+
+        <div class="qr-frame">
+
+          <div id="qrcode"></div>
+
+        </div>
+
+        <div class="qr-note">
+          PRESENTA QUESTO QR ALL'INGRESSO
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="actions">
+
+      <button
+        type="button"
+        class="wallet-action"
+        id="appleWalletButton"
+        aria-label="Add to Apple Wallet"
+      >
+
+        <img
+          src="./apple-wallet.svg"
+          alt="Add to Apple Wallet"
+          id="appleWalletBadge"
+        >
+
+        <span class="wallet-fallback">
+          ADD TO APPLE WALLET
+        </span>
+
+      </button>
+
+      <button
+        type="button"
+        class="wallet-action"
+        id="googleWalletButton"
+        aria-label="Add to Google Wallet"
+      >
+
+        <img
+          src="./google-wallet.svg"
+          alt="Add to Google Wallet"
+          id="googleWalletBadge"
+        >
+
+        <span class="wallet-fallback">
+          ADD TO GOOGLE WALLET
+        </span>
+
+      </button>
+
+      <button
+        type="button"
+        class="pdf-button"
+        id="pdfButton"
+      >
+        DOWNLOAD TICKET / PDF
+      </button>
+
+    </section>
+
+    <div
+      class="action-message"
+      id="actionMessage"
+    ></div>
+
+    <footer class="ticket-footer">
+
+      <div>
+        MÆDNESS®<br>
+        DIGITAL TICKET
+      </div>
+
+      <div class="ticket-footer-right">
+
+        <span id="footerDate">
+          18.10.2026
+        </span>
+
+        <br>
+
+        <span id="footerLocation">
+          FOGGIA / ITALY
+        </span>
+
+      </div>
+
+    </footer>
+
+  </main>
+
+  <script>
+
+    const ticketStorage =
+      sessionStorage.getItem(
+        "maedness_ticket"
+      );
+
+    if (!ticketStorage) {
+
+      window.location.replace(
+        "./index.html"
+      );
+
+    }
+
+    let ticketData = null;
+
+    try {
+
+      ticketData =
+        JSON.parse(ticketStorage);
+
+    } catch (error) {
+
+      console.error(
+        "Ticket data error:",
+        error
+      );
+
+      window.location.replace(
+        "./index.html"
+      );
+
+    }
+
+    if (!ticketData) {
+
+      window.location.replace(
+        "./index.html"
+      );
+
+    }
+
+    const participantName =
+      document.getElementById(
+        "participantName"
+      );
+
+    const ticketEvent =
+      document.getElementById(
+        "ticketEvent"
+      );
+
+    const ticketDate =
+      document.getElementById(
+        "ticketDate"
+      );
+
+    const ticketLocation =
+      document.getElementById(
+        "ticketLocation"
+      );
+
+    const footerDate =
+      document.getElementById(
+        "footerDate"
+      );
+
+    const footerLocation =
+      document.getElementById(
+        "footerLocation"
+      );
+
+    const qrcode =
+      document.getElementById(
+        "qrcode"
+      );
+
+    const qrState =
+      document.getElementById(
+        "qrState"
+      );
+
+    const appleWalletButton =
+      document.getElementById(
+        "appleWalletButton"
+      );
+
+    const googleWalletButton =
+      document.getElementById(
+        "googleWalletButton"
+      );
+
+    const appleWalletBadge =
+      document.getElementById(
+        "appleWalletBadge"
+      );
+
+    const googleWalletBadge =
+      document.getElementById(
+        "googleWalletBadge"
+      );
+
+    const pdfButton =
+      document.getElementById(
+        "pdfButton"
+      );
+
+    const actionMessage =
+      document.getElementById(
+        "actionMessage"
+      );
+
+    const eventData =
+      ticketData.event || {};
+
+    const participantFullName =
+      `${ticketData.firstName || ""} ${ticketData.lastName || ""}`.trim();
+
+    participantName.textContent =
+      participantFullName || "—";
+
+    ticketEvent.textContent =
+      eventData.name ||
+      "ROTAROTT";
+
+    const formattedEventDate =
+      formatDate(
+        eventData.date ||
+        "2026-10-18"
+      );
+
+    ticketDate.textContent =
+      formattedEventDate;
+
+    footerDate.textContent =
+      formattedEventDate;
+
+    ticketLocation.textContent =
+      eventData.location ||
+      "FOGGIA / ITALY";
+
+    footerLocation.textContent =
+      eventData.location ||
+      "FOGGIA / ITALY";
+
+    function formatDate(value) {
+
+      if (!value) {
+        return "18.10.2026";
+      }
+
+      const parts =
+        String(value).split("-");
+
+      if (parts.length === 3) {
+
+        return (
+          `${parts[2]}.${parts[1]}.${parts[0]}`
+        );
+
+      }
+
+      return value;
+
+    }
+
+    const ticketToken =
+      ticketData.token;
+
+    if (
+      ticketToken &&
+      typeof QRCode !== "undefined"
+    ) {
+
+      new QRCode(
+        qrcode,
+        {
+          text: ticketToken,
+          width: 168,
+          height: 168,
+          colorDark: "#050505",
+          colorLight: "#ffffff",
+          correctLevel:
+            QRCode.CorrectLevel.H
+        }
+      );
+
+    } else {
+
+      qrcode.textContent =
+        "QR ERROR";
+
+      qrState.textContent =
+        "ERROR";
+
+      qrState.style.color =
+        "#ff0000";
+
+    }
+
+    const userAgent =
+      navigator.userAgent ||
+      navigator.vendor ||
+      window.opera ||
+      "";
+
+    const isIOS =
+      /iPad|iPhone|iPod/.test(
+        userAgent
+      ) ||
+      (
+        navigator.platform ===
+        "MacIntel" &&
+        navigator.maxTouchPoints > 1
+      );
+
+    const isAndroid =
+      /Android/i.test(
+        userAgent
+      );
+
+    if (isIOS) {
+
+      googleWalletButton.classList.add(
+        "hidden"
+      );
+
+    } else if (isAndroid) {
+
+      appleWalletButton.classList.add(
+        "hidden"
+      );
+
+    } else {
+
+      appleWalletButton.classList.add(
+        "hidden"
+      );
+
+      googleWalletButton.classList.add(
+        "hidden"
+      );
+
+    }
+
+    appleWalletBadge.addEventListener(
+      "error",
+      () => {
+
+        appleWalletButton.classList.add(
+          "badge-error"
+        );
+
+      }
+    );
+
+    googleWalletBadge.addEventListener(
+      "error",
+      () => {
+
+        googleWalletButton.classList.add(
+          "badge-error"
+        );
+
+      }
+    );
+
+    const walletData =
+      ticketData.wallet || {};
+
+    const walletSerialNumber =
+      walletData.serialNumber ||
+      null;
+
+    const appleWalletUrl =
+      walletSerialNumber
+        ? `https://api.walletwallet.dev/p/${encodeURIComponent(
+            walletSerialNumber
+          )}/apple.pkpass`
+        : null;
+
+    appleWalletButton.addEventListener(
+      "click",
+      () => {
+
+        if (!appleWalletUrl) {
+
+          actionMessage.textContent =
+            "APPLE WALLET / LINK NON DISPONIBILE";
+
+          return;
+
+        }
+
+        actionMessage.textContent =
+          "OPENING APPLE WALLET";
+
+        window.location.href =
+          appleWalletUrl;
+
+      }
+    );
+
+    const googleWalletUrl =
+      walletData.googleSaveUrl ||
+      null;
+
+    googleWalletButton.addEventListener(
+      "click",
+      () => {
+
+        if (!googleWalletUrl) {
+
+          actionMessage.textContent =
+            "GOOGLE WALLET / LINK NON DISPONIBILE";
+
+          return;
+
+        }
+
+        actionMessage.textContent =
+          "OPENING GOOGLE WALLET";
+
+        window.location.href =
+          googleWalletUrl;
+
+      }
+    );
+
+    pdfButton.addEventListener(
+      "click",
+      async () => {
+
+        if (
+          !window.jspdf ||
+          !window.jspdf.jsPDF
+        ) {
+
+          actionMessage.textContent =
+            "PDF ENGINE NON DISPONIBILE";
+
+          console.error(
+            "jsPDF non è stato caricato."
+          );
+
+          return;
+
+        }
+
+        if (!ticketToken) {
+
+          actionMessage.textContent =
+            "QR NON DISPONIBILE";
+
+          return;
+
+        }
+
+        try {
+
+          pdfButton.classList.add(
+            "loading"
+          );
+
+          pdfButton.textContent =
+            "CREATING PDF...";
+
+          actionMessage.textContent =
+            "GENERATING TICKET PDF";
+
+          await waitForQR();
+
+          const jsPDF =
+            window.jspdf.jsPDF;
+
+          const doc =
+            new jsPDF({
+              orientation: "portrait",
+              unit: "mm",
+              format: "a4"
+            });
+
+          const pageWidth =
+            doc.internal.pageSize.getWidth();
+
+          const pageHeight =
+            doc.internal.pageSize.getHeight();
+
+          const margin =
+            12;
+
+          doc.setFillColor(
+            255,
+            255,
+            255
+          );
+
+          doc.rect(
+            0,
+            0,
+            pageWidth,
+            pageHeight,
+            "F"
+          );
+
+          doc.setDrawColor(
+            238,
+            238,
+            238
+          );
+
+          doc.setLineWidth(
+            .18
+          );
+
+          for (
+            let i = -20;
+            i < pageWidth + 50;
+            i += 23
+          ) {
+
+            doc.line(
+              i,
+              0,
+              i - 45,
+              pageHeight
+            );
+
+          }
+
+          doc.setDrawColor(
+            248,
+            235,
+            235
+          );
+
+          doc.setLineWidth(
+            .16
+          );
+
+          for (
+            let i = -30;
+            i < pageWidth + 60;
+            i += 31
+          ) {
+
+            doc.line(
+              i,
+              pageHeight,
+              i + 55,
+              0
+            );
+
+          }
+
+          doc.setTextColor(
+            5,
+            5,
+            5
+          );
+
+          doc.setFont(
+            "helvetica",
+            "bold"
+          );
+
+          doc.setFontSize(
+            20
+          );
+
+          doc.text(
+            "MÆDNESS®",
+            margin,
+            19
+          );
+
+          doc.setTextColor(
+            255,
+            0,
+            0
+          );
+
+          doc.setFontSize(
+            6.5
+          );
+
+          doc.text(
+            "DIGITAL ACCESS",
+            pageWidth - margin,
+            16,
+            {
+              align: "right"
+            }
+          );
+
+          doc.text(
+            "ROTAROTT / 001",
+            pageWidth - margin,
+            20,
+            {
+              align: "right"
+            }
+          );
+
+          doc.setDrawColor(
+            5,
+            5,
+            5
+          );
+
+          doc.setLineWidth(
+            .22
+          );
+
+          doc.line(
+            margin,
+            27,
+            pageWidth - margin,
+            27
+          );
+
+          doc.setTextColor(
+            255,
+            0,
+            0
+          );
+
+          doc.setFontSize(
+            6.5
+          );
+
+          doc.text(
+            "ACCESS CONFIRMED",
+            margin,
+            37
+          );
+
+          doc.setTextColor(
+            5,
+            5,
+            5
+          );
+
+          doc.setFont(
+            "helvetica",
+            "bold"
+          );
+
+          doc.setFontSize(
+            29
+          );
+
+          const eventName =
+            String(
+              eventData.name ||
+              "ROTAROTT"
+            ).toUpperCase();
+
+          doc.text(
+            eventName,
+            margin,
+            50
+          );
+
+          doc.setFontSize(
+            14
+          );
+
+          doc.text(
+            formattedEventDate,
+            margin,
+            62
+          );
+
+          doc.setFontSize(
+            6.5
+          );
+
+          doc.text(
+            String(
+              eventData.location ||
+              "FOGGIA / ITALY"
+            ).toUpperCase(),
+            pageWidth - margin,
+            62,
+            {
+              align: "right"
+            }
+          );
+
+          const cardX =
+            margin;
+
+          const cardY =
+            72;
+
+          const cardWidth =
+            pageWidth - (
+              margin * 2
+            );
+
+          const cardHeight =
+            168;
+
+          doc.setFillColor(
+            255,
+            255,
+            255
+          );
+
+          doc.rect(
+            cardX,
+            cardY,
+            cardWidth,
+            cardHeight,
+            "F"
+          );
+
+          doc.setDrawColor(
+            255,
+            0,
+            0
+          );
+
+          doc.setLineWidth(
+            .35
+          );
+
+          doc.line(
+            cardX - 2,
+            cardY,
+            cardX + 9,
+            cardY
+          );
+
+          doc.line(
+            cardX,
+            cardY - 2,
+            cardX,
+            cardY + 9
+          );
+
+          doc.line(
+            cardX + cardWidth - 9,
+            cardY + cardHeight,
+            cardX + cardWidth + 2,
+            cardY + cardHeight
+          );
+
+          doc.line(
+            cardX + cardWidth,
+            cardY + cardHeight - 9,
+            cardX + cardWidth,
+            cardY + cardHeight + 2
+          );
+
+          doc.setTextColor(
+            90,
+            90,
+            90
+          );
+
+          doc.setFontSize(
+            5.8
+          );
+
+          doc.text(
+            "NOME E COGNOME PARTECIPANTE",
+            cardX + 7,
+            cardY + 11
+          );
+
+          doc.setTextColor(
+            5,
+            5,
+            5
+          );
+
+          doc.setFont(
+            "helvetica",
+            "bold"
+          );
+
+          doc.setFontSize(
+            18
+          );
+
+          const nameForPdf =
+            participantFullName
+              .toUpperCase()
+              .substring(
+                0,
+                42
+              );
+
+          doc.text(
+            nameForPdf ||
+            "PARTECIPANTE",
+            cardX + 7,
+            cardY + 22
+          );
+
+          doc.setDrawColor(
+            225,
+            225,
+            225
+          );
+
+          doc.setLineWidth(
+            .2
+          );
+
+          doc.line(
+            cardX + 7,
+            cardY + 30,
+            cardX + cardWidth - 7,
+            cardY + 30
+          );
+
+          doc.setTextColor(
+            5,
+            5,
+            5
+          );
+
+          doc.setFont(
+            "helvetica",
+            "bold"
+          );
+
+          doc.setFontSize(
+            5.8
+          );
+
+          doc.text(
+            "ENTRY QR",
+            cardX + 7,
+            cardY + 40
+          );
+
+          doc.setTextColor(
+            32,
+            216,
+            120
+          );
+
+          doc.text(
+            "VALID",
+            cardX + cardWidth - 7,
+            cardY + 40,
+            {
+              align: "right"
+            }
+          );
+
+          const qrCanvas =
+            qrcode.querySelector(
+              "canvas"
+            );
+
+          let qrDataUrl = null;
+
+          if (qrCanvas) {
+
+            qrDataUrl =
+              createRoundedQRDataURL(
+                qrCanvas,
+                14
+              );
+
+          } else {
+
+            const qrImage =
+              qrcode.querySelector(
+                "img"
+              );
+
+            if (qrImage) {
+
+              const sourceData =
+                await imageToDataURL(
+                  qrImage.src
+                );
+
+              qrDataUrl =
+                createRoundedQRFromDataURL(
+                  sourceData,
+                  14
+                );
+
+            }
+
+          }
+
+          if (!qrDataUrl) {
+
+            throw new Error(
+              "QR image unavailable"
+            );
+
+          }
+
+          const qrSize =
+            82;
+
+          const qrX =
+            cardX +
+            (
+              cardWidth -
+              qrSize
+            ) / 2;
+
+          const qrY =
+            cardY + 47;
+
+          doc.addImage(
+            qrDataUrl,
+            "PNG",
+            qrX,
+            qrY,
+            qrSize,
+            qrSize,
+            undefined,
+            "FAST"
+          );
+
+          doc.setTextColor(
+            90,
+            90,
+            90
+          );
+
+          doc.setFont(
+            "helvetica",
+            "bold"
+          );
+
+          doc.setFontSize(
+            5.5
+          );
+
+          doc.text(
+            "PRESENTA QUESTO QR ALL'INGRESSO",
+            pageWidth / 2,
+            cardY + 138,
+            {
+              align: "center"
+            }
+          );
+
+          doc.setTextColor(
+            155,
+            155,
+            155
+          );
+
+          doc.setFontSize(
+            4
+          );
+
+          doc.text(
+            "DIGITAL TICKET / MÆDNESS®",
+            pageWidth / 2,
+            cardY + 146,
+            {
+              align: "center"
+            }
+          );
+
+          doc.setTextColor(
+            5,
+            5,
+            5
+          );
+
+          doc.setFontSize(
+            5.5
+          );
+
+          doc.text(
+            "MÆDNESS®",
+            margin,
+            pageHeight - 13
+          );
+
+          doc.setTextColor(
+            255,
+            0,
+            0
+          );
+
+          doc.text(
+            `${formattedEventDate} / ${String(
+              eventData.location ||
+              "FOGGIA / ITALY"
+            ).toUpperCase()}`,
+            pageWidth - margin,
+            pageHeight - 13,
+            {
+              align: "right"
+            }
+          );
+
+          const safeName =
+            participantFullName
+              .replace(
+                /[^a-z0-9]+/gi,
+                "-"
+              )
+              .replace(
+                /^-+|-+$/g,
+                ""
+              )
+              .toUpperCase();
+
+          const safeEventName =
+            eventName
+              .replace(
+                /[^a-z0-9]+/gi,
+                "-"
+              );
+
+          const fileName =
+            `MAEDNESS-${safeEventName}-${safeName || "TICKET"}.pdf`;
+
+          doc.save(
+            fileName
+          );
+
+          actionMessage.textContent =
+            "PDF READY";
+
+        } catch (error) {
+
+          console.error(
+            "PDF generation error:",
+            error
+          );
+
+          actionMessage.textContent =
+            "PDF ERROR";
+
+        } finally {
+
+          pdfButton.classList.remove(
+            "loading"
+          );
+
+          pdfButton.textContent =
+            "DOWNLOAD TICKET / PDF";
+
+        }
+
+      }
+    );
+
+    function createRoundedQRDataURL(
+      sourceCanvas,
+      radius
+    ) {
+
+      const size =
+        Math.min(
+          sourceCanvas.width,
+          sourceCanvas.height
+        );
+
+      const output =
+        document.createElement(
+          "canvas"
+        );
+
+      output.width =
+        size;
+
+      output.height =
+        size;
+
+      const context =
+        output.getContext(
+          "2d"
+        );
+
+      context.clearRect(
+        0,
+        0,
+        size,
+        size
+      );
+
+      roundedRect(
+        context,
+        0,
+        0,
+        size,
+        size,
+        radius
+      );
+
+      context.clip();
+
+      context.drawImage(
+        sourceCanvas,
+        0,
+        0,
+        size,
+        size
+      );
+
+      return output.toDataURL(
+        "image/png"
+      );
+
+    }
+
+    function createRoundedQRFromDataURL(
+      sourceDataURL,
+      radius
+    ) {
+
+      return new Promise(
+        (resolve, reject) => {
+
+          const image =
+            new Image();
+
+          image.onload =
+            () => {
+
+              const size =
+                Math.min(
+                  image.naturalWidth,
+                  image.naturalHeight
+                );
+
+              const output =
+                document.createElement(
+                  "canvas"
+                );
+
+              output.width =
+                size;
+
+              output.height =
+                size;
+
+              const context =
+                output.getContext(
+                  "2d"
+                );
+
+              roundedRect(
+                context,
+                0,
+                0,
+                size,
+                size,
+                radius
+              );
+
+              context.clip();
+
+              context.drawImage(
+                image,
+                0,
+                0,
+                size,
+                size
+              );
+
+              resolve(
+                output.toDataURL(
+                  "image/png"
+                )
+              );
+
+            };
+
+          image.onerror =
+            reject;
+
+          image.src =
+            sourceDataURL;
+
+        }
+      );
+
+    }
+
+    function roundedRect(
+      context,
+      x,
+      y,
+      width,
+      height,
+      radius
+    ) {
+
+      const r =
+        Math.min(
+          radius,
+          width / 2,
+          height / 2
+        );
+
+      context.beginPath();
+
+      context.moveTo(
+        x + r,
+        y
+      );
+
+      context.lineTo(
+        x + width - r,
+        y
+      );
+
+      context.quadraticCurveTo(
+        x + width,
+        y,
+        x + width,
+        y + r
+      );
+
+      context.lineTo(
+        x + width,
+        y + height - r
+      );
+
+      context.quadraticCurveTo(
+        x + width,
+        y + height,
+        x + width - r,
+        y + height
+      );
+
+      context.lineTo(
+        x + r,
+        y + height
+      );
+
+      context.quadraticCurveTo(
+        x,
+        y + height,
+        x,
+        y + height - r
+      );
+
+      context.lineTo(
+        x,
+        y + r
+      );
+
+      context.quadraticCurveTo(
+        x,
+        y,
+        x + r,
+        y
+      );
+
+      context.closePath();
+
+    }
+
+    function waitForQR() {
+
+      return new Promise(
+        (resolve, reject) => {
+
+          let attempts = 0;
+
+          const maxAttempts = 40;
+
+          const checkQR = () => {
+
+            const canvas =
+              qrcode.querySelector(
+                "canvas"
+              );
+
+            const image =
+              qrcode.querySelector(
+                "img"
+              );
+
+            if (canvas || image) {
+
+              resolve();
+
+              return;
+
+            }
+
+            attempts++;
+
+            if (
+              attempts >=
+              maxAttempts
+            ) {
+
+              reject(
+                new Error(
+                  "QR generation timeout"
+                )
+              );
+
+              return;
+
+            }
+
+            setTimeout(
+              checkQR,
+              100
+            );
+
+          };
+
+          checkQR();
+
+        }
+      );
+
+    }
+
+    function imageToDataURL(
+      src
+    ) {
+
+      return new Promise(
+        (resolve, reject) => {
+
+          const image =
+            new Image();
+
+          image.crossOrigin =
+            "anonymous";
+
+          image.onload =
+            () => {
+
+              const canvas =
+                document.createElement(
+                  "canvas"
+                );
+
+              canvas.width =
+                image.naturalWidth;
+
+              canvas.height =
+                image.naturalHeight;
+
+              const context =
+                canvas.getContext(
+                  "2d"
+                );
+
+              context.drawImage(
+                image,
+                0,
+                0
+              );
+
+              resolve(
+                canvas.toDataURL(
+                  "image/png"
+                )
+              );
+
+            };
+
+          image.onerror =
+            reject;
+
+          image.src =
+            src;
+
+        }
+      );
+
+    }
+
+  </script>
+
+</body>
+</html>
