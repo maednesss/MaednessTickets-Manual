@@ -630,6 +630,29 @@
       appearance: auto;
     }
 
+    .contact-info-label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 8px;
+      font-weight: 900;
+      letter-spacing: .2em;
+    }
+
+    .contact-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 52px;
+      border: 1px solid #000;
+      background: #fff;
+      color: #000;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-align: center;
+    }
+
     /* INSTAGRAM */
 
     .instagram-box {
@@ -1055,12 +1078,24 @@
           name="prContact"
           required
         >
-          <option value="" selected disabled>SELEZIONA UN PR</option>
+          <option value="" selected disabled>SELEZIONA UN CONTATTO</option>
           <option value="fabrizio">FABRIZIO</option>
           <option value="gianmarco">GIANMARCO</option>
           <option value="federica">FEDERICA</option>
           <option value="antonio">ANTONIO</option>
         </select>
+
+      </div>
+
+      <div class="form-group contact-info-group">
+
+        <div class="contact-info-label">
+          INFO DISPONIBILI
+        </div>
+
+        <div class="contact-info">
+          EVENTO · LISTE · TAVOLI
+        </div>
 
       </div>
 
@@ -1135,7 +1170,7 @@
         class="submit-button"
         id="submitButton"
       >
-        SCRIVI SU WHATSAPP ↗
+        BLOCCA IL TUO POSTO
       </button>
 
       <div
@@ -1919,7 +1954,7 @@
 
         if (!phone) {
           formStatus.textContent =
-            "SELEZIONA UN PR PER CONTINUARE";
+            "SCEGLI UN CONTATTO PER CONTINUARE";
           return;
         }
 
