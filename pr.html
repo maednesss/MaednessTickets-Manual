@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+
+  <title>MÆDNESS® — CONTATTA IL PR</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700;800;900&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --red: #ff0000;
+      --black: #050505;
+      --white: #ffffff;
+      --green: #20d878;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--black);
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: "Inter", sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .desktop-warning {
+      display: none;
+    }
+
+    @media (min-width: 700px) {
+      body > *:not(.desktop-warning) {
+        display: none !important;
+      }
+
+      .desktop-warning {
+        position: fixed;
+        inset: 0;
+        background: #050505;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 40px;
+        font-family: "Anton", sans-serif;
+        font-size: 34px;
+        letter-spacing: .04em;
+      }
+    }
+
+    /* TOPBAR */
+
+    .topbar {
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px;
+      mix-blend-mode: difference;
+      pointer-events: none;
+    }
+
+    .top-logo {
+      font-family: "Anton", sans-serif;
+      font-size: 21px;
+      letter-spacing: .04em;
+    }
+
+    .top-logo .registered {
+      position: relative;
+      top: -2px;
+    }
+
+    .top-event {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .15em;
+    }
+
+    /* SCROLL PROGRESS */
+
+    .scroll-progress {
+      position: fixed;
+      z-index: 110;
+      top: 52px;
+      right: 7px;
+      width: 2px;
+      height: calc(100vh - 70px);
+      background: rgba(255,255,255,.2);
+    }
+
+    .scroll-progress span {
+      display: block;
+      width: 100%;
+      height: 0%;
+      background: var(--red);
+      transform-origin: top;
+    }
+
+    /* FIXED GRAPHICS */
+
+    .graphics {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      overflow: hidden;
+      transition: opacity .08s linear;
+    }
+
+    .micro {
+      position: absolute;
+      font-size: 7px;
+      letter-spacing: .2em;
+      font-weight: 800;
+      white-space: nowrap;
+      opacity: .7;
+    }
+
+    .micro-1 {
+      top: 18%;
+      left: 15px;
+    }
+
+    .micro-2 {
+      top: 72%;
+      right: 14px;
+      transform: rotate(90deg);
+    }
+
+    .micro-3 {
+      bottom: 7%;
+      left: 15px;
+    }
+
+    .micro-4 {
+      top: 55%;
+      left: 14px;
+      transform: rotate(-90deg);
+    }
+
+    /* HERO */
+
+    .hero {
+      position: relative;
+      height: 82svh;
+      min-height: 580px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 16px 32px;
+      background: url("./hero.png");
+      background-size: cover;
+      background-position: center;
+      filter: contrast(1.15);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(0,0,0,0) 0%,
+          rgba(0,0,0,.03) 18%,
+          rgba(0,0,0,.10) 34%,
+          rgba(0,0,0,.24) 50%,
+          rgba(0,0,0,.48) 65%,
+          rgba(0,0,0,.75) 78%,
+          rgba(0,0,0,.92) 90%,
+          rgba(5,5,5,1) 100%
+        );
+
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .18;
+      pointer-events: none;
+
+      background-image:
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 3px,
+          rgba(255,255,255,.25) 4px
+        );
+
+      z-index: 2;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+    }
+
+    .hero-small {
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: .25em;
+      margin-bottom: 7px;
+    }
+
+    .hero-logo {
+      font-family: "Anton", sans-serif;
+      font-size: clamp(70px, 23vw, 120px);
+      line-height: .78;
+      letter-spacing: -.035em;
+      white-space: nowrap;
+
+      text-shadow:
+        4px 0 var(--red),
+        -2px 0 rgba(255,255,255,.3);
+
+      transform: translate3d(-3px, 0, 0);
+      will-change: transform;
+    }
+
+    .hero-event {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-event-name {
+      font-family: "Anton", sans-serif;
+      font-size: 38px;
+      line-height: .9;
+      letter-spacing: .01em;
+    }
+
+    .hero-event-meta {
+      font-size: 8px;
+      line-height: 1.5;
+      letter-spacing: .16em;
+      font-weight: 800;
+    }
+
+    /* SWIPE */
+
+    .scroll-label {
+      position: absolute;
+      z-index: 4;
+      right: 16px;
+      bottom: 31px;
+      width: 14px;
+      height: 54px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 2px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .scroll-chevron {
+      width: 9px;
+      height: 9px;
+      border-right: 2px solid var(--white);
+      border-bottom: 2px solid var(--white);
+      transform: rotate(45deg);
+      flex: 0 0 auto;
+      opacity: 0;
+      animation: scrollChevron 1.35s ease-in-out infinite;
+    }
+
+    .scroll-chevron:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .scroll-chevron:nth-child(2) {
+      animation-delay: .18s;
+    }
+
+    .scroll-chevron:nth-child(3) {
+      animation-delay: .36s;
+    }
+
+    .scroll-chevron:nth-child(4) {
+      animation-delay: .54s;
+    }
+
+    @keyframes scrollChevron {
+      0% {
+        opacity: 0;
+        transform: translateY(-9px) rotate(45deg);
+      }
+
+      20% {
+        opacity: 1;
+      }
+
+      55% {
+        opacity: .9;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(17px) rotate(45deg);
+      }
+    }
+
+    /* MOTION / NORMATHERS */
+
+    .motion {
+      position: relative;
+      height: 32svh;
+      min-height: 220px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--black);
+    }
+
+    .motion-split {
+      position: relative;
+      width: 100%;
+      height: clamp(72px, 20vw, 100px);
+      overflow: hidden;
+    }
+
+    .motion-half {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: max-content;
+      white-space: nowrap;
+
+      font-family: "Anton", sans-serif;
+      font-size: clamp(56px, 19vw, 92px);
+      line-height: .8;
+      letter-spacing: -.025em;
+
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,.28);
+
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    .motion-half span {
+      display: block;
+    }
+
+    .motion-half.top {
+      clip-path: inset(0 0 50% 0);
+    }
+
+    .motion-half.bottom {
+      clip-path: inset(50% 0 0 0);
+    }
+
+    .motion-meta {
+      position: absolute;
+      inset: 14px 14px auto;
+      z-index: 4;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      font-size: 6px;
+      line-height: 1.45;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      opacity: .78;
+      color: var(--red);
+    }
+
+    .motion-meta-right {
+      text-align: right;
+    }
+
+    .motion-status {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 13px;
+      z-index: 4;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      pointer-events: none;
+      font-size: 6px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      opacity: .78;
+      color: var(--red);
+    }
+
+    .motion-status-number {
+      font-family: "Anton", sans-serif;
+      font-size: 10px;
+      letter-spacing: .04em;
+      opacity: .8;
+      text-align: right;
+      color: var(--white);
+    }
+
+    .motion-status-text {
+      min-width: 110px;
+    }
+
+    .motion-code {
+      display: inline-block;
+      min-width: 118px;
+      white-space: nowrap;
+      text-align: left;
+      color: var(--red);
+    }
+
+    .motion-meta-right .motion-code {
+      text-align: right;
+    }
+
+    /* REGISTRATION */
+
+    .registration {
+      position: relative;
+      z-index: 5;
+      background: var(--white);
+      color: var(--black);
+      padding: 24px 16px 45px;
+      min-height: 680px;
+    }
+
+    .registration-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 22px;
+      font-size: 8px;
+      font-weight: 900;
+      letter-spacing: .2em;
+    }
+
+    .registration-top span:last-child {
+      color: var(--red);
+    }
+
+    .register-heading {
+      --register-title-size: clamp(60px, 19.5vw, 76px);
+      --register-video-width: clamp(130px, 40vw, 155px);
+      --register-heading-gap: clamp(2px, 1vw, 4px);
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        var(--register-video-width);
+
+      column-gap: var(--register-heading-gap);
+      align-items: start;
+      margin-bottom: 28px;
+    }
+
+    .register-title {
+      font-family: "Anton", sans-serif;
+      font-size: var(--register-title-size);
+      line-height: .78;
+      letter-spacing: -.02em;
+      margin-bottom: 0;
+      min-width: 0;
+
+      opacity: 0;
+      transform: translate3d(0, 18px, 0);
+      will-change: transform, opacity;
+    }
+
+    .register-title.get-in-visible {
+      animation: getInReveal .42s cubic-bezier(.22,.75,.25,1) forwards;
+    }
+
+    @keyframes getInReveal {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 18px, 0);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    .register-video-box {
+      width: var(--register-video-width);
+      margin: 0;
+      justify-self: end;
+      align-self: start;
+      position: relative;
+    }
+
+    .register-video {
+      display: block;
+      width: 100%;
+      height: clamp(97.5px, 30vw, 116px);
+      object-fit: cover;
+      object-position: center;
+      background: #000;
+      border: 0;
+      outline: none;
+      border-radius: 0;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .register-video-box::before,
+    .register-video-box::after {
+      content: "";
+      position: absolute;
+      left: -5px;
+      width: 18px;
+      height: 18px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .register-video-box::before {
+      top: -5px;
+      border-left: 1px solid var(--red);
+      border-top: 1px solid var(--red);
+    }
+
+    .register-video-box::after {
+      top: calc(clamp(97.5px, 30vw, 116px) - 13px);
+      bottom: auto;
+      border-left: 1px solid var(--red);
+      border-bottom: 1px solid var(--red);
+    }
+
+    .last-maed {
+      margin-top: 4px;
+      padding-right: 0;
+      font-size: 6px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: .18em;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 8px;
+      font-weight: 900;
+      letter-spacing: .2em;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      height: 52px;
+      border: 1px solid #000;
+      border-radius: 0;
+      padding: 0 13px;
+      background: #fff;
+      color: #000;
+      outline: none;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--red);
+      box-shadow: inset 4px 0 0 var(--red);
+    }
+
+    .form-group select {
+      height: 52px;
+      border: 1px solid #000;
+      border-radius: 0;
+      padding: 0 13px;
+      background: #fff;
+      color: #000;
+      outline: none;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      appearance: none;
+    }
+
+    /* INSTAGRAM */
+
+    .instagram-box {
+      margin-top: 22px;
+      margin-bottom: 18px;
+    }
+
+    .instagram-button {
+      position: relative;
+      width: 100%;
+      min-height: 58px;
+      border: 2px solid #000;
+      border-radius: 0;
+      background: #fff;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+      cursor: pointer;
+      overflow: hidden;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .07em;
+
+      transition:
+        background .25s ease,
+        color .25s ease,
+        border-color .25s ease,
+        transform .12s ease;
+    }
+
+    .instagram-button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--red);
+      transition: left .25s ease;
+      z-index: 0;
+    }
+
+    .instagram-button:active {
+      transform: scale(.97);
+    }
+
+    .instagram-button > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .instagram-icon {
+      width: 22px;
+      height: 22px;
+      flex: 0 0 22px;
+    }
+
+    .instagram-icon svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .instagram-status {
+      min-height: 16px;
+      margin-top: 7px;
+      font-size: 7px;
+      font-weight: 900;
+      letter-spacing: .15em;
+      text-align: center;
+      opacity: .55;
+    }
+
+    .instagram-button.clicked {
+      background: var(--green);
+      border-color: var(--green);
+      color: #000;
+      animation: instaClick .42s ease;
+    }
+
+    .instagram-button.clicked::before {
+      display: none;
+    }
+
+    .instagram-button.clicked .instagram-icon {
+      animation: iconPop .45s ease;
+    }
+
+    @keyframes instaClick {
+      0% {
+        transform: scale(1);
+      }
+
+      35% {
+        transform: scale(.95);
+      }
+
+      65% {
+        transform: scale(1.025);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes iconPop {
+      0% {
+        transform: rotate(0) scale(1);
+      }
+
+      45% {
+        transform: rotate(-12deg) scale(1.25);
+      }
+
+      100% {
+        transform: rotate(0) scale(1);
+      }
+    }
+
+    .instagram-status.active {
+      opacity: 1;
+      color: #15934c;
+    }
+
+    /* SUBMIT */
+
+    .submit-button {
+      width: 100%;
+      height: 58px;
+      margin-top: 7px;
+      border: 0;
+      border-radius: 0;
+      background: var(--black);
+      color: var(--white);
+      font-family: "Anton", sans-serif;
+      font-size: 21px;
+      letter-spacing: .04em;
+      cursor: pointer;
+
+      transition:
+        background .2s ease,
+        transform .12s ease;
+    }
+
+    .submit-button:active {
+      transform: scale(.98);
+    }
+
+    .submit-button:hover {
+      background: var(--red);
+    }
+
+    .form-status {
+      min-height: 20px;
+      margin-top: 10px;
+      font-size: 8px;
+      font-weight: 900;
+      letter-spacing: .14em;
+      text-align: center;
+    }
+
+    /* BOTTOM */
+
+    .registration-bottom {
+      margin-top: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .registration-bottom-title {
+      font-family: "Anton", sans-serif;
+      font-size: 17vw;
+      line-height: .75;
+      color: transparent;
+      -webkit-text-stroke: 1px #000;
+      white-space: nowrap;
+    }
+
+    .registration-bottom-image {
+      width: clamp(58px, 17vw, 78px);
+      height: clamp(58px, 17vw, 78px);
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      flex: 0 0 auto;
+      background: transparent;
+      border: 0;
+      animation: rotateImage 7s linear infinite;
+    }
+
+    @keyframes rotateImage {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .registration-footer {
+      margin-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 7px;
+      font-weight: 900;
+      letter-spacing: .16em;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="desktop-warning">
+    MÆDNESS®<br>
+    MOBILE EXPERIENCE ONLY
+  </div>
+
+  <header class="topbar">
+
+    <div class="top-logo">
+      MÆDNESS<span class="registered">®</span>
+    </div>
+
+    <div class="top-event">
+      ROTAROTT / 001
+    </div>
+
+  </header>
+
+  <div class="scroll-progress">
+    <span id="progress"></span>
+  </div>
+
+  <div class="graphics" id="graphics">
+
+    <div class="micro micro-1">
+      41°27'N / 15°33'E
+    </div>
+
+    <div class="micro micro-2">
+      NO SIGNAL / 001
+    </div>
+
+    <div class="micro micro-3">
+      MÆDNESS / FOGGIA
+    </div>
+
+    <div class="micro micro-4">
+      ACCESS / 2026
+    </div>
+
+  </div>
+
+  <!-- HERO -->
+
+  <section class="hero" id="hero">
+
+    <div class="hero-content">
+
+      <div class="hero-small">
+        MÆDNESS PRESENTS
+      </div>
+
+      <div class="hero-logo" id="heroLogo">
+        MÆDNESS
+      </div>
+
+      <div class="hero-event">
+
+        <div class="hero-event-name">
+          ROTAROTT
+        </div>
+
+        <div class="hero-event-meta">
+          18.10.2026<br>
+          FOGGIA / ITALY
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="scroll-label" aria-hidden="true">
+
+      <span class="scroll-chevron"></span>
+      <span class="scroll-chevron"></span>
+      <span class="scroll-chevron"></span>
+      <span class="scroll-chevron"></span>
+
+    </div>
+
+  </section>
+
+  <!-- MOTION -->
+
+  <section class="motion" id="motion">
+
+    <div class="motion-meta" aria-hidden="true">
+
+      <div>
+        <span class="motion-code" id="motionCodeTL">
+          001 / TRANSMISSION
+        </span>
+      </div>
+
+      <div class="motion-meta-right">
+        <span class="motion-code" id="motionCodeTR">
+          ROTAROTT
+        </span>
+      </div>
+
+    </div>
+
+    <div class="motion-split" aria-label="NORMATHERS">
+
+      <div
+        class="motion-half top"
+        id="motionTop"
+        aria-hidden="true"
+      >
+        <span>NORMATHERS</span>
+      </div>
+
+      <div
+        class="motion-half bottom"
+        id="motionBottom"
+        aria-hidden="true"
+      >
+        <span>NORMATHERS</span>
+      </div>
+
+    </div>
+
+    <div class="motion-status" aria-hidden="true">
+
+      <span
+        class="motion-status-text motion-code"
+        id="motionStatus"
+      >
+        ENTER / SIGNAL
+      </span>
+
+      <span
+        class="motion-status-number"
+        id="motionStatusNumber"
+      >
+        01
+      </span>
+
+    </div>
+
+  </section>
+
+  <!-- REGISTRATION -->
+
+  <section class="registration">
+
+    <div class="registration-top">
+
+      <span>
+        002 / CONTACT PR
+      </span>
+
+      <span>
+        ROTAROTT
+      </span>
+
+    </div>
+
+    <div class="register-heading">
+
+      <h2 class="register-title">
+        TALK<br>
+        TO.
+      </h2>
+
+      <div class="register-video-box">
+
+        <video
+          class="register-video"
+          id="registerVideo"
+          autoplay
+          muted
+          loop
+          playsinline
+          webkit-playsinline
+          preload="auto"
+          disablepictureinpicture
+          controlslist="nodownload noplaybackrate nofullscreen"
+        >
+
+          <source
+            src="./hero3.mp4"
+            type="video/mp4"
+          >
+
+        </video>
+
+        <div class="last-maed">
+          LAST MÆD
+        </div>
+
+      </div>
+
+    </div>
+
+    <form id="registrationForm" aria-label="Contatta un PR MÆDNESS">
+
+      <div class="form-group">
+        <label for="prContact">SCEGLI IL TUO CONTATTO</label>
+        <select id="prContact" name="prContact" required>
+          <option value="" selected disabled>SELEZIONA UN PR</option>
+          <option value="fabrizio">FABRIZIO</option>
+          <option value="gianmarco">GIANMARCO</option>
+          <option value="federica">FEDERICA</option>
+          <option value="antonio">ANTONIO</option>
+        </select>
+      </div>
+
+      <div class="instagram-box">
+        <div class="instagram-status active" id="instagramStatus" style="opacity:1;color:#111">
+          INFO EVENTO / LISTE / TAVOLI
+        </div>
+      </div>
+
+      <button type="submit" class="submit-button" id="submitButton">
+        SCRIVI SU WHATSAPP ↗
+      </button>
+
+      <div class="form-status" id="formStatus" aria-live="polite">
+        MESSAGGIO PRONTO · INVIO NON AUTOMATICO
+      </div>
+
+    </form>
+
+    <div class="registration-bottom">
+
+      <div class="registration-bottom-title">
+        ROTAROTT
+      </div>
+
+      <img
+        src="./hero2.svg"
+        alt=""
+        class="registration-bottom-image"
+      />
+
+    </div>
+
+    <div class="registration-footer">
+
+      <span>
+        MÆDNESS®
+      </span>
+
+      <span>
+        FOGGIA / 2026
+      </span>
+
+    </div>
+
+  </section>
+
+  <script>
+
+    /* ELEMENTS */
+
+    const progress =
+      document.getElementById("progress");
+
+    const hero =
+      document.getElementById("hero");
+
+    const heroLogo =
+      document.getElementById("heroLogo");
+
+    const motion =
+      document.getElementById("motion");
+
+    const motionTop =
+      document.getElementById("motionTop");
+
+    const motionBottom =
+      document.getElementById("motionBottom");
+
+    const motionStatus =
+      document.getElementById("motionStatus");
+
+    const motionStatusNumber =
+      document.getElementById("motionStatusNumber");
+
+    const motionCodeTL =
+      document.getElementById("motionCodeTL");
+
+    const motionCodeTR =
+      document.getElementById("motionCodeTR");
+
+    const graphics =
+      document.getElementById("graphics");
+
+    const instagramButton =
+      document.getElementById("instagramButton");
+
+    const instagramText =
+      document.getElementById("instagramText");
+
+    const instagramStatus =
+      document.getElementById("instagramStatus");
+
+    const registrationForm =
+      document.getElementById("registrationForm");
+
+    const submitButton =
+      document.getElementById("submitButton");
+
+    const formStatus =
+      document.getElementById("formStatus");
+
+    const registerVideo =
+      document.getElementById("registerVideo");
+
+    const registerTitle =
+      document.querySelector(".register-title");
+
+
+    /* GET IN ENTRANCE ANIMATION */
+
+    if (registerTitle) {
+
+      const getInObserver =
+        new IntersectionObserver(
+          (entries, observer) => {
+
+            entries.forEach((entry) => {
+
+              if (entry.isIntersecting) {
+
+                registerTitle.classList.add(
+                  "get-in-visible"
+                );
+
+                observer.unobserve(
+                  registerTitle
+                );
+
+              }
+
+            });
+
+          },
+          {
+            threshold: 0.35
+          }
+        );
+
+      getInObserver.observe(
+        registerTitle
+      );
+
+    }
+
+
+    /* VIDEO AUTOPLAY */
+
+    function startRegisterVideo() {
+
+      if (!registerVideo) return;
+
+      registerVideo.muted = true;
+      registerVideo.defaultMuted = true;
+
+      registerVideo.setAttribute(
+        "muted",
+        ""
+      );
+
+      registerVideo.setAttribute(
+        "playsinline",
+        ""
+      );
+
+      registerVideo.setAttribute(
+        "webkit-playsinline",
+        ""
+      );
+
+      const playPromise =
+        registerVideo.play();
+
+      if (
+        playPromise !== undefined
+      ) {
+
+        playPromise.catch(() => {});
+
+      }
+
+    }
+
+
+    if (registerVideo) {
+
+      registerVideo.addEventListener(
+        "loadeddata",
+        startRegisterVideo
+      );
+
+      registerVideo.addEventListener(
+        "canplay",
+        startRegisterVideo
+      );
+
+      registerVideo.addEventListener(
+        "loadedmetadata",
+        startRegisterVideo
+      );
+
+      registerVideo.addEventListener(
+        "error",
+        () => {
+
+          console.log(
+            "Errore video:",
+            registerVideo.error
+          );
+
+        }
+      );
+
+    }
+
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      startRegisterVideo
+    );
+
+    window.addEventListener(
+      "load",
+      startRegisterVideo
+    );
+
+    document.addEventListener(
+      "touchstart",
+      startRegisterVideo,
+      {
+        passive: true,
+        once: true
+      }
+    );
+
+
+    /* INSTAGRAM MEMORY */
+
+    const INSTAGRAM_MEMORY_KEY =
+      "maedness_instagram_clicked";
+
+
+    function activateInstagramState() {
+
+      instagramButton.classList.add(
+        "clicked"
+      );
+
+      instagramText.textContent =
+        "MÆDNESS MODE: ON ✓";
+
+      instagramStatus.textContent =
+        "GRAZIE DEL SUPPORTO";
+
+      instagramStatus.classList.add(
+        "active"
+      );
+
+    }
+
+
+    function checkInstagramMemory() {
+
+      const alreadyClicked =
+        sessionStorage.getItem(
+          INSTAGRAM_MEMORY_KEY
+        );
+
+      if (
+        alreadyClicked === "true"
+      ) {
+
+        activateInstagramState();
+
+      }
+
+    }
+
+
+    /* INSTAGRAM CLICK */
+
+    instagramButton.addEventListener(
+      "click",
+      () => {
+
+        sessionStorage.setItem(
+          INSTAGRAM_MEMORY_KEY,
+          "true"
+        );
+
+        window.open(
+          "https://www.instagram.com/maednesss?stkn=cGpjbWRwbHhhcG80",
+          "_blank",
+          "noopener,noreferrer"
+        );
+
+        activateInstagramState();
+
+      }
+    );
+
+
+    /* MOTION MATRIX TEXT LOOP */
+
+    const motionCodeSets = {
+
+      tl: [
+        "001 / TRANSMISSION",
+        "SIGNAL / ACTIVE",
+        "SYSTEM / READY",
+        "ACCESS / 2026",
+        "MÆDNESS / FOGGIA",
+        "CHANNEL / 001",
+        "18.10.2026 / LIVE",
+        "DATA / RECEIVED"
+      ],
+
+      tr: [
+        "ROTAROTT",
+        "FOGGIA / ITALY",
+        "18.10.2026",
+        "SIGNAL / LOCKED",
+        "ACCESS / OPEN",
+        "MÆDNESS / 001",
+        "CHANNEL / ACTIVE",
+        "LOCATION / 41°27'N"
+      ],
+
+      bl: [
+        "ENTER / SIGNAL",
+        "ALIGN / NORMATHERS",
+        "ROTAROTT / ACCESS",
+        "SYNC / ACTIVE",
+        "SYSTEM / ONLINE",
+        "SIGNAL / FOUND",
+        "ACCESS / GRANTED",
+        "TRANSMISSION / OK"
+      ]
+
+    };
+
+
+    const matrixChars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 /.-_:°Æ";
+
+
+    function randomMatrixString(target) {
+
+      if (!target) return;
+
+      const finalText =
+        target.dataset.matrixFinal ||
+        target.textContent;
+
+      const length =
+        finalText.length;
+
+      let frame = "";
+
+      for (
+        let i = 0;
+        i < length;
+        i++
+      ) {
+
+        if (
+          finalText[i] === " "
+        ) {
+
+          frame += " ";
+
+        } else if (
+          Math.random() < 0.24
+        ) {
+
+          frame += finalText[i];
+
+        } else {
+
+          frame +=
+            matrixChars[
+              Math.floor(
+                Math.random() *
+                matrixChars.length
+              )
+            ];
+
+        }
+
+      }
+
+      target.textContent = frame;
+
+    }
+
+
+    function runMatrixCycle(
+      target,
+      values,
+      delay = 0
+    ) {
+
+      if (
+        !target ||
+        !values.length
+      ) {
+
+        return;
+
+      }
+
+      setTimeout(() => {
+
+        let currentIndex = 0;
+
+
+        function next() {
+
+          currentIndex =
+            (
+              currentIndex + 1
+            ) % values.length;
+
+          const finalText =
+            values[currentIndex];
+
+          target.dataset.matrixFinal =
+            finalText;
+
+          let frame = 0;
+
+          const totalFrames = 7;
+
+          const frameDuration = 42;
+
+
+          const scramble =
+            setInterval(() => {
+
+              frame++;
+
+              randomMatrixString(
+                target
+              );
+
+              if (
+                frame >= totalFrames
+              ) {
+
+                clearInterval(
+                  scramble
+                );
+
+                target.textContent =
+                  finalText;
+
+                setTimeout(
+                  next,
+                  650 +
+                  Math.random() * 650
+                );
+
+              }
+
+            }, frameDuration);
+
+        }
+
+
+        target.dataset.matrixFinal =
+          values[0];
+
+        target.textContent =
+          values[0];
+
+        setTimeout(
+          next,
+          900
+        );
+
+      }, delay);
+
+    }
+
+
+    runMatrixCycle(
+      motionCodeTL,
+      motionCodeSets.tl,
+      0
+    );
+
+    runMatrixCycle(
+      motionCodeTR,
+      motionCodeSets.tr,
+      420
+    );
+
+    runMatrixCycle(
+      motionStatus,
+      motionCodeSets.bl,
+      840
+    );
+
+
+    /* SCROLL ANIMATION */
+
+    let ticking = false;
+
+
+    /* HERO LOGO SMOOTH MOTION */
+
+    let logoTargetX = -3;
+    let logoCurrentX = -3;
+
+    let logoTargetY = 0;
+    let logoCurrentY = 0;
+
+
+    function animateHeroLogo() {
+
+      const ease = 0.12;
+
+      logoCurrentX +=
+        (
+          logoTargetX -
+          logoCurrentX
+        ) * ease;
+
+      logoCurrentY +=
+        (
+          logoTargetY -
+          logoCurrentY
+        ) * ease;
+
+      heroLogo.style.transform =
+        `translate3d(
+          ${logoCurrentX}px,
+          ${logoCurrentY}px,
+          0
+        )`;
+
+      requestAnimationFrame(
+        animateHeroLogo
+      );
+
+    }
+
+
+    function updateScroll() {
+
+      const scrollTop =
+        window.scrollY;
+
+      const documentHeight =
+        document.documentElement.scrollHeight -
+        window.innerHeight;
+
+      const scrollPercent =
+        documentHeight > 0
+          ? scrollTop / documentHeight
+          : 0;
+
+
+      /* Progress */
+
+      progress.style.height =
+        `${scrollPercent * 100}%`;
+
+
+      /* MICRO GRAPHICS FADE */
+
+      const graphicsFade =
+        Math.max(
+          0,
+          1 - (scrollTop / 420)
+        );
+
+      graphics.style.opacity =
+        graphicsFade;
+
+
+      /* Hero parallax */
+
+      const heroOffset =
+        Math.min(
+          scrollTop * 0.22,
+          120
+        );
+
+      hero.style.backgroundPosition =
+        `center calc(50% + ${heroOffset}px)`;
+
+
+      /* HERO LOGO */
+
+      const logoMove =
+        Math.min(
+          scrollTop * 0.14,
+          55
+        );
+
+      logoTargetX =
+        -3 + logoMove;
+
+      logoTargetY =
+        Math.min(
+          scrollTop * 0.025,
+          10
+        );
+
+
+      /* NORMATHERS / HORIZONTAL SPLIT */
+
+      if (
+        motion &&
+        motionTop &&
+        motionBottom
+      ) {
+
+        const motionRect =
+          motion.getBoundingClientRect();
+
+        const motionHeight =
+          motion.offsetHeight;
+
+        const viewportHeight =
+          window.innerHeight;
+
+        const start =
+          viewportHeight;
+
+        const end =
+          -motionHeight;
+
+        const total =
+          start - end;
+
+        const travelled =
+          start - motionRect.top;
+
+        let motionProgress =
+          travelled / total;
+
+        motionProgress =
+          Math.max(
+            0,
+            Math.min(
+              1,
+              motionProgress
+            )
+          );
+
+
+        /* ZONA CENTRALE PIÙ LUNGA */
+
+        const centerHold = 0.13;
+
+        const rawDistance =
+          Math.abs(
+            motionProgress - 0.5
+          );
+
+        const distanceFromCenter =
+          Math.max(
+            0,
+            rawDistance - centerHold
+          ) /
+          (0.5 - centerHold);
+
+
+        const splitEase =
+          distanceFromCenter *
+          distanceFromCenter *
+          (3 - 2 * distanceFromCenter);
+
+
+        const maxSplit =
+          Math.min(
+            window.innerWidth * 0.62,
+            190
+          );
+
+        const splitDistance =
+          splitEase * maxSplit;
+
+
+        /* TOP → DESTRA */
+
+        motionTop.style.transform =
+          `translate3d(
+            calc(-50% + ${splitDistance}px),
+            0,
+            0
+          )`;
+
+
+        /* BOTTOM → SINISTRA */
+
+        motionBottom.style.transform =
+          `translate3d(
+            calc(-50% - ${splitDistance}px),
+            0,
+            0
+          )`;
+
+
+        /* TRANSITION STATUS */
+
+        if (
+          motionStatusNumber
+        ) {
+
+          if (
+            motionProgress < 0.32
+          ) {
+
+            motionStatusNumber.textContent =
+              "01";
+
+          } else if (
+            motionProgress < 0.68
+          ) {
+
+            motionStatusNumber.textContent =
+              "02";
+
+          } else {
+
+            motionStatusNumber.textContent =
+              "03";
+
+          }
+
+        }
+
+      }
+
+
+      ticking = false;
+
+    }
+
+
+    window.addEventListener(
+      "scroll",
+      () => {
+
+        if (!ticking) {
+
+          window.requestAnimationFrame(
+            updateScroll
+          );
+
+          ticking = true;
+
+        }
+
+      },
+      {
+        passive: true
+      }
+    );
+
+
+    /* AVVIO ANIMAZIONE LOGO */
+
+    requestAnimationFrame(
+      animateHeroLogo
+    );
+
+
+    /* PR CONTACT / WHATSAPP */
+
+    registrationForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const contact = document.getElementById("prContact").value;
+      const contacts = {
+        fabrizio: "393273251734",
+        gianmarco: "393885653388",
+        federica: "393924417056",
+        antonio: "393404086485"
+      };
+      const phone = contacts[contact];
+      if (!phone) {
+        formStatus.textContent = "SELEZIONA UN PR PER CONTINUARE";
+        return;
+      }
+      const message = "Ciao! Ti scrivo per avere informazioni su MÆDNESS 24/10";
+      const url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+      window.location.href = url;
+    });
+
+
+    /* INITIALIZATION */
+
+    checkInstagramMemory();
+
+    updateScroll();
+
+    startRegisterVideo();
+
+  </script>
+
+</body>
+</html>
