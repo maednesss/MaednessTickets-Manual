@@ -301,8 +301,8 @@
 
     .ticket-event {
       font-family: "Anton", sans-serif;
-      font-size: clamp(48px, 15vw, 68px);
-      line-height: .8;
+      font-size: clamp(27px, 8.5vw, 42px);
+      line-height: clamp(38.4px, 12vw, 54.4px);
       letter-spacing: -.025em;
       white-space: nowrap;
       overflow: hidden;
@@ -617,7 +617,7 @@
 
       <div class="ticket-code">
         DIGITAL ACCESS<br>
-        ROTAROTT / 001
+        PRIVATE EVENT / 001
       </div>
 
     </header>
@@ -632,7 +632,7 @@
         class="ticket-event"
         id="ticketEvent"
       >
-        ROTAROTT
+        PRIVATE EVENT
       </h1>
 
       <img
@@ -648,7 +648,7 @@
           class="ticket-date"
           id="ticketDate"
         >
-          18.10.2026
+          24.10.2026
         </div>
 
         <div
@@ -771,7 +771,7 @@
       <div class="ticket-footer-right">
 
         <span id="footerDate">
-          18.10.2026
+          24.10.2026
         </span>
 
         <br>
@@ -940,12 +940,12 @@
 
     ticketEvent.textContent =
       eventData.name ||
-      "ROTAROTT";
+      "PRIVATE EVENT";
 
     const formattedEventDate =
       formatDate(
         eventData.date ||
-        "2026-10-18"
+        "2026-10-24"
       );
 
     ticketDate.textContent =
@@ -965,7 +965,7 @@
     function formatDate(value) {
 
       if (!value) {
-        return "18.10.2026";
+        return "24.10.2026";
       }
 
       const parts =
@@ -1313,7 +1313,7 @@
           );
 
           doc.text(
-            "ROTAROTT / 001",
+            "PRIVATE EVENT / 001",
             pageWidth - margin,
             20,
             {
@@ -1372,7 +1372,7 @@
           const eventName =
             String(
               eventData.name ||
-              "ROTAROTT"
+              "PRIVATE EVENT"
             ).toUpperCase();
 
           doc.text(
