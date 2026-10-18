@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   />
 
-  <title>MÆDNESS® — CONTATTA IL PR</title>
+  <title>MÆDNESS® — ROTAROTT</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -627,7 +627,7 @@
       font-size: 15px;
       font-weight: 800;
       letter-spacing: .04em;
-      appearance: none;
+      appearance: auto;
     }
 
     /* INSTAGRAM */
@@ -996,7 +996,7 @@
     <div class="registration-top">
 
       <span>
-        002 / CONTACT PR
+        002 / GET ACCESS
       </span>
 
       <span>
@@ -1008,8 +1008,8 @@
     <div class="register-heading">
 
       <h2 class="register-title">
-        TALK<br>
-        TO.
+        GET<br>
+        IN.
       </h2>
 
       <div class="register-video-box">
@@ -1042,32 +1042,106 @@
 
     </div>
 
-    <form id="registrationForm" aria-label="Contatta un PR MÆDNESS">
+    <form id="registrationForm">
 
       <div class="form-group">
-        <label for="prContact">SCEGLI IL TUO CONTATTO</label>
-        <select id="prContact" name="prContact" required>
+
+        <label for="prContact">
+          SCEGLI IL TUO CONTATTO
+        </label>
+
+        <select
+          id="prContact"
+          name="prContact"
+          required
+        >
           <option value="" selected disabled>SELEZIONA UN PR</option>
           <option value="fabrizio">FABRIZIO</option>
           <option value="gianmarco">GIANMARCO</option>
           <option value="federica">FEDERICA</option>
           <option value="antonio">ANTONIO</option>
         </select>
+
       </div>
+
+      <!-- INSTAGRAM -->
 
       <div class="instagram-box">
-        <div class="instagram-status active" id="instagramStatus" style="opacity:1;color:#111">
-          INFO EVENTO / LISTE / TAVOLI
+
+        <button
+          type="button"
+          class="instagram-button"
+          id="instagramButton"
+          aria-label="Apri il profilo Instagram di MÆDNESS"
+        >
+
+          <span class="instagram-icon">
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+
+              <rect
+                x="3"
+                y="3"
+                width="18"
+                height="18"
+                rx="5"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+
+              <circle
+                cx="17.5"
+                cy="6.5"
+                r="1.2"
+                fill="currentColor"
+              />
+
+            </svg>
+
+          </span>
+
+          <span id="instagramText">
+            SEGUI @maednesss
+          </span>
+
+        </button>
+
+        <div
+          class="instagram-status"
+          id="instagramStatus"
+        >
+          INSTAGRAM / OPTIONAL
         </div>
+
       </div>
 
-      <button type="submit" class="submit-button" id="submitButton">
+      <!-- SUBMIT -->
+
+      <button
+        type="submit"
+        class="submit-button"
+        id="submitButton"
+      >
         SCRIVI SU WHATSAPP ↗
       </button>
 
-      <div class="form-status" id="formStatus" aria-live="polite">
-        MESSAGGIO PRONTO · INVIO NON AUTOMATICO
-      </div>
+      <div
+        class="form-status"
+        id="formStatus"
+      ></div>
 
     </form>
 
@@ -1825,25 +1899,48 @@
 
     /* PR CONTACT / WHATSAPP */
 
-    registrationForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const contact = document.getElementById("prContact").value;
-      const contacts = {
-        fabrizio: "393273251734",
-        gianmarco: "393885653388",
-        federica: "393924417056",
-        antonio: "393404086485"
-      };
-      const phone = contacts[contact];
-      if (!phone) {
-        formStatus.textContent = "SELEZIONA UN PR PER CONTINUARE";
-        return;
-      }
-      const message = "Ciao! Ti scrivo per avere informazioni su MÆDNESS 24/10";
-      const url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
-      window.location.href = url;
-    });
+    registrationForm.addEventListener(
+      "submit",
+      (event) => {
 
+        event.preventDefault();
+
+        const contact =
+          document.getElementById("prContact").value;
+
+        const contacts = {
+          fabrizio: "393273251734",
+          gianmarco: "393885653388",
+          federica: "393924417056",
+          antonio: "393404086485"
+        };
+
+        const phone = contacts[contact];
+
+        if (!phone) {
+          formStatus.textContent =
+            "SELEZIONA UN PR PER CONTINUARE";
+          return;
+        }
+
+        const message =
+          "Ciao! Ti scrivo per avere informazioni su MÆDNESS 24/10";
+
+        const whatsappUrl =
+          "https://wa.me/" + phone + "?text=" +
+          encodeURIComponent(message);
+
+        const whatsappWindow =
+          window.open(whatsappUrl, "_blank");
+
+        if (whatsappWindow) {
+          whatsappWindow.opener = null;
+        } else {
+          window.location.assign(whatsappUrl);
+        }
+
+      }
+    );
 
     /* INITIALIZATION */
 
