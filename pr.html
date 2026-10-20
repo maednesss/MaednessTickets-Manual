@@ -639,18 +639,46 @@
     }
 
     .contact-info {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: stretch;
       width: 100%;
       height: 52px;
       border: 1px solid #000;
       background: #fff;
       color: #000;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .08em;
       text-align: center;
+    }
+
+    .ticket-option {
+      min-width: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 0 4px;
+    }
+
+    .ticket-option + .ticket-option {
+      border-left: 1px solid #000;
+    }
+
+    .ticket-name {
+      font-size: 8px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: .04em;
+      white-space: nowrap;
+    }
+
+    .ticket-description {
+      font-size: 6px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: .03em;
+      white-space: nowrap;
     }
 
     /* INSTAGRAM */
@@ -1094,7 +1122,15 @@
         </div>
 
         <div class="contact-info">
-          BY PRESALE ONLY
+          <div class="ticket-option">
+            <span class="ticket-name">DRINK PASS · 15€</span>
+            <span class="ticket-description">INGRESSO + 2 DRINK</span>
+          </div>
+
+          <div class="ticket-option">
+            <span class="ticket-name">STANDARD PASS · 15€</span>
+            <span class="ticket-description">SOLO INGRESSO</span>
+          </div>
         </div>
 
       </div>
